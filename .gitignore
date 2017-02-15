@@ -1,5 +1,6 @@
 /build
 in
-tsh.exe.stackdump
+*.stackdump
 *.o
 *.exe
+

@@ -224,7 +224,6 @@ static void do_bgfg(char **argv) {
 
         if (bg)
             printf("[%d] (%d) %s", job->jid, job->pid, job->cmdline);
-
         return;
     } while (0);
 
@@ -545,6 +544,7 @@ void eval(char *cmdline) {
                 if (setpgid(0, 0) == -1)
                     unix_error("setpgid");
 
+                #if 1
                 /* execute requested program (new process) */
                 if((getcwd(cwd, sizeof(cwd))) == NULL)
                     fprintf(stdout, "Can't open current directory.\n");
@@ -553,13 +553,14 @@ void eval(char *cmdline) {
                 } else {
                     if((dir = search_env_variable("PATH", argv[0])) != NULL) {
                         dir_size = strlen(dir);
-                        memcpy(cwd, dir, dir_size);
-                        cwd[dir_size] = '/';
-                        memcpy(cwd+dir_size+1, argv[0], strlen(argv[0]));
-                        cwd[dir_size+1+strlen(argv[0])] = '\0';
-                        execv(cwd, argv);
+                        dir[dir_size] = '/';
+                        dir[dir_size+1] = '\0'; /* must be null-terminated */
+                        strcat(dir, argv[0]);
+                        execv(dir, argv);
                     }
                 }
+                #endif
+                // execlp(argv[0], argv, NULL); /* Could search PATH automatically */
 
                 /* flow reaches here when execv fails */
                 if (errno == ENOENT) {
