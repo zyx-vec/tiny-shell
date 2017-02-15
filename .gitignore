@@ -1,0 +1,5 @@
+/build
+in
+tsh.exe.stackdump
+*.o
+*.exe
