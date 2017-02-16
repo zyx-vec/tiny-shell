@@ -508,7 +508,7 @@ void init() {
  * when we type ctrl-c (ctrl-z) at the keyboard.
  */
 void eval(char *cmdline) {
-    char *argv[MAXARGS];
+    char *argv/*[MAXPIPES]*/[MAXARGS];
     int  bg;
     pid_t pid;
     pid_t fg_pid;           /* pid of foreground job (if any) */
@@ -516,8 +516,9 @@ void eval(char *cmdline) {
     char cwd[128];
     char* dir;
     int dir_size;
-
-    bg = parseline(cmdline, argv);
+    // int is_pipe;
+    // is_pipe = ((strchr(cmdline, '|')) != NULL);
+    bg = parseline(cmdline, argv/*, is_pipe*/);
 
     if (argv[0] == NULL)
         return;
