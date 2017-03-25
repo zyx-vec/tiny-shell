@@ -3,4 +3,7 @@ in
 *.stackdump
 *.o
 *.exe
-
+*.swp
+*.c~
+*.un~
+.gitignore~
